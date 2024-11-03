@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  nats:
+    image: nats@latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.order
+    environment:
+      - NATS_URL=nats://nats:4222
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.inventory
+    environment:
+      - NATS_URL=nats://nats:4222
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.notification
+    environment:
+      - NATS_URL=nats://nats:4222
