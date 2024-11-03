@@ -1,10 +1,11 @@
-version: '3.7'
 services:
   nats:
-    image: nats@latest
+    image: nats:latest
     ports:
       - "4222:4222"
-      - "8222:8222"
+      - "8222:8222" # NATS Management Port
+    networks:
+      - nats-network-poc
 
   order-service:
     build:
@@ -12,6 +13,11 @@ services:
       dockerfile: Dockerfile.order
     environment:
       - NATS_URL=nats://nats:4222
+    depends_on:
+      nats:
+        condition: service_started
+    networks:
+      - nats-network-poc
 
   inventory-service:
     build:
@@ -19,6 +25,11 @@ services:
       dockerfile: Dockerfile.inventory
     environment:
       - NATS_URL=nats://nats:4222
+    depends_on:
+      nats:
+        condition: service_started
+    networks:
+      - nats-network-poc
 
   notification-service:
     build:
@@ -26,3 +37,12 @@ services:
       dockerfile: Dockerfile.notification
     environment:
       - NATS_URL=nats://nats:4222
+    depends_on:
+      nats:
+        condition: service_started
+    networks:
+      - nats-network-poc
+
+networks:
+  nats-network-poc:
+    name: nats-network-poc

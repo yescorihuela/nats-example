@@ -1,7 +1,7 @@
-FROM golang:1.23-alpine
+FROM golang:1.20-alpine
 WORKDIR /app
-COPY go.mod go.sum ./
+COPY ./notification/go.mod ./notification/go.sum ./
 RUN go mod download
 COPY . .
-RUN go build -o notification-service ./notification
+RUN go build -o notification-service ./notification/main.go
 CMD ["./notification-service"] 
