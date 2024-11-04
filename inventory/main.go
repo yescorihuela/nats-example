@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/nats-io/nats.go"
 )
 
 func main() {
 
-	nc, err := nats.Connect("nats://nats:4222")
+	nc, err := nats.Connect("nats://nats:4222", nats.MaxReconnects(-1), nats.ReconnectWait(time.Second*2))
 	if err != nil {
 		log.Fatal(err)
 	}

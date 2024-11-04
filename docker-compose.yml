@@ -4,6 +4,7 @@ services:
     ports:
       - "4222:4222"
       - "8222:8222" # NATS Management Port
+    command: ["-js"]
     networks:
       - nats-network-poc
 
